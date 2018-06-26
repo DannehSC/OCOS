@@ -26,6 +26,8 @@ end
 
 local manifest = require('downloadmanifest')
 
+print(manifest)
+
 for i, v in pairs(manifest) do
 	print('Downloading: ' .. i)
 	local data = ""
