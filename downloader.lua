@@ -1,3 +1,5 @@
+local component = require('component')
+
 if not component.isAvailable('internet') then
 	error('No internet available. Cannot download.')
 end
@@ -30,4 +32,3 @@ for i, v in pairs(manifest) do
 		print('[WARNING] Unable to request ' .. v)
 	end
 end
- 
