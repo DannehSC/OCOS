@@ -24,7 +24,7 @@ if not fs.exists('./downloadmanifest.lua') then
 	end
 end
 
-local manifest = require('./downloadmanifest.lua')
+local manifest = require('downloadmanifest.lua')
 
 for i, v in pairs(manifest) do
 	print('Downloading: ' .. i)
