@@ -18,6 +18,7 @@ if not fs.exists('./downloadmanifest.lua') then
 	if manData then
 		local file = io.open('./downloadmanifest.lua', 'w')
 		file:write(manData)
+		print(manData)
 		file:close()
 	else
 		error('[ERROR] Unable to fetch manifest.')
