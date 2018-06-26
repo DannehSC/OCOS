@@ -10,7 +10,11 @@ local internet = require('internet')
 local manifestURL = "https://raw.githubusercontent.com/DannehSC/OCOS/master/downloadmanifest.lua"
 
 if not fs.exists('./downloadmanifest.lua') then
-	local manData = internet.request(manifestURL)
+	print('Attempting to download manifest.')
+	local manData = ""
+	for dat in internet.request(manifestURL) do
+		manData = manData .. tostring(dat)
+	end
 	if manData then
 		local file = io.open('./downloadmanifest.lua', 'w')
 		file:write(manData)
@@ -23,7 +27,11 @@ end
 local manifest = require('./downloadmanifest.lua')
 
 for i, v in pairs(manifest) do
-	local data = internet.request(v)
+	print('Downloading: ' .. i)
+	local data = ""
+	for dat in internet.request(v) do
+		data = data .. tostring(dat)
+	end
 	if data then
 		local file = io.open('./' .. i, 'w')
 		file:write(data)
