@@ -19,8 +19,8 @@ end
 local fs = require('filesystem')
 local computer = require('computer')
 
-local logger = checkReq('./logger.lua')
-local internet = checkReq('./internetHandler.lua')
+local logger = checkReq('logger')
+local internet = checkReq('internetHandler')
 
 local startScript, startSandboxed
 
