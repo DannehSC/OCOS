@@ -27,12 +27,21 @@ end
 local manifest = require('downloadmanifest')
 
 for i, v in pairs(manifest) do
-	print('Downloading: ' .. i)
 	local data = ""
 	for dat in internet.request(v) do
 		data = data .. tostring(dat)
 	end
 	if data then
+		if fs.exists('./' .. i) then
+			if io.open('./' .. i, 'r'):read('*a') ~= data then
+				print('Updating ' .. i)
+			else
+				print('Ignoring ' .. i .. ' - It is already updated')
+				return
+			end
+		else
+			print('Installing ' .. i)
+		end
 		local file = io.open('./' .. i, 'w')
 		file:write(data)
 		file:close()
