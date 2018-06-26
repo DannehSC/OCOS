@@ -32,19 +32,22 @@ for i, v in pairs(manifest) do
 		data = data .. tostring(dat)
 	end
 	if data then
+		local u = true
 		if fs.exists('./' .. i) then
 			if io.open('./' .. i, 'r'):read('*a') ~= data then
 				print('Updating ' .. i)
 			else
 				print('Ignoring ' .. i .. ' - It is already updated')
-				return
+				u = false
 			end
 		else
 			print('Installing ' .. i)
 		end
-		local file = io.open('./' .. i, 'w')
-		file:write(data)
-		file:close()
+		if u then
+			local file = io.open('./' .. i, 'w')
+			file:write(data)
+			file:close()
+		end
 	else
 		print('[WARNING] Unable to request ' .. v)
 	end
