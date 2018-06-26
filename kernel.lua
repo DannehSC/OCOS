@@ -1,11 +1,11 @@
 --L. Kernel
 
 local function kPanic(...)
-	error('[!KERNEL PANIC!]', ...)
+	error('[!KERNEL PANIC!]' .. table.concat({...}))
 end
 
 local function hError(...)
-	error('[ERROR]', ...)
+	error('[ERROR]' .. table.concat({...}))
 end
 
 local function checkReq(path)
