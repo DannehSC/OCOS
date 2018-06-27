@@ -19,6 +19,7 @@ local function checkReq(path)
 end
 
 local fs = require('filesystem')
+local term = require('term')
 local computer = require('computer')
 
 local logger = checkReq('logger')
@@ -135,5 +136,7 @@ function startSandboxed(path, admin)
 		logger:err('[ERROR] '..b..' [S]')
 	end
 end
+
+term.clear()
 
 startScript('./main.lua')
