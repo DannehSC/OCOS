@@ -1,11 +1,11 @@
 --L. Kernel
 
 local function kPanic(...)
-	error('[!KERNEL PANIC!]' .. table.concat({...}))
+	error('[!KERNEL PANIC!] ' .. table.concat({...}))
 end
 
 local function hError(...)
-	error('[ERROR]' .. table.concat({...}))
+	error('[ERROR] ' .. table.concat({...}))
 end
 
 local function checkReq(path)
@@ -98,10 +98,10 @@ function startSandboxed(path, admin)
 				env._G = _G.sandboxed
 				local ran, er = pcall(loaded)
 				if er then
-					error(er)
+					error('[RUNTIME] ' .. er)
 				end
 			else
-				error(err)
+				error('[SYNTAX] ' .. err)
 			end
 		else
 			logger:err('[ERROR] No file exists at '..path..' [S]')
