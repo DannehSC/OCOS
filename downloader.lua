@@ -14,13 +14,14 @@ local manData = ""
 for dat in internet.request(manifestURL) do
 	manData = manData .. tostring(dat)
 end
+if not manData then
+	error('[ERROR] Unable to fetch manifest.')
+end
 if io.open('./downloadmanifest.lua', 'r'):read('*a') ~= manData then
 	print('Updating manifest')
 	local file = io.open('./downloadmanifest.lua', 'w')
 	file:write(manData)
 	file:close()
-else
-	error('[ERROR] Unable to fetch manifest.')
 end
 
 local manifest = require('downloadmanifest')
