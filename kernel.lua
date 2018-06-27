@@ -30,9 +30,19 @@ function startScript(path)
 	if fs.exists(path) then
 		local file = io.open(path, 'r')
 		local data = file:read('*a')
-		local loaded, err = load(data)
+		local env = setmetatable({}, {
+			__index = function(self, index)
+				if rawget(self, index) then
+					return rawget(self, index)
+				elseif _ENV[index] then
+					return rawget(_ENV, index)
+				else
+					return nil
+				end
+			end
+		})
+		local loaded, err = load(data, 'Script', 'bt', env)
 		if loaded then
-			local env = getfenv(loaded)
 			function env.getUsedMemory()
 				return computer.totalMemory() - computer.freeMemory()
 			end
