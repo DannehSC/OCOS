@@ -29,6 +29,7 @@ local startScript, startSandboxed
 _G.sandboxed = {}
 
 function startScript(path)
+	print('Starting ' .. path)
 	if fs.exists(path) then
 		local file = io.open(path, 'r')
 		local data = file:read('*a')
@@ -83,6 +84,7 @@ function startScript(path)
 end
 
 function startSandboxed(path, admin)
+	print('[S] Starting ' .. path)
 	local a,b = pcall(function()
 		if fs.exists(path) then
 			local file = io.open(path, 'r')
