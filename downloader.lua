@@ -17,8 +17,21 @@ end
 if not manData then
 	error('[ERROR] Unable to fetch manifest.')
 end
-if io.open('./downloadmanifest.lua', 'r'):read('*a') ~= manData then
-	print('Updating manifest')
+
+local u = true
+
+if fs.exists('./downloadmanifest.lua') then
+	if io.open('./downloadmanifest.lua', 'r'):read('*a') ~= manData then
+		print('Updating manifest')
+	else
+		print('Manifest up to date.')
+		u = false
+	end
+else
+	print('Installing manifest')
+end
+
+if u then
 	local file = io.open('./downloadmanifest.lua', 'w')
 	file:write(manData)
 	file:close()
