@@ -1,5 +1,7 @@
 --L. Kernel
 
+local realEnv = _ENV
+
 local function kPanic(...)
 	error('[!KERNEL PANIC!] ' .. table.concat({...}))
 end
@@ -30,43 +32,43 @@ function startScript(path)
 	if fs.exists(path) then
 		local file = io.open(path, 'r')
 		local data = file:read('*a')
-		local env = setmetatable({}, {
+		local newEnv = setmetatable({}, {
 			__index = function(self, index)
 				if rawget(self, index) then
 					return rawget(self, index)
-				elseif _ENV[index] then
-					return rawget(_ENV, index)
+				elseif realEnv[index] and index ~= '_ENV' then
+					return realEnv[index]
 				else
 					return nil
 				end
 			end
 		})
-		local loaded, err = load(data, 'Script', 'bt', env)
+		local loaded, err = load(data, 'Script', 'bt', newEnv)
 		if loaded then
-			function env.getUsedMemory()
+			function newEnv.getUsedMemory()
 				return computer.totalMemory() - computer.freeMemory()
 			end
-			function env.getFreeMemory()
+			function newEnv.getFreeMemory()
 				return computer.freeMemory()
 			end
-			function env.getTotalMemory()
+			function newEnv.getTotalMemory()
 				return computer.totalMemory()
 			end
-			function env.startScript(...)
+			function newEnv.startScript(...)
 				startScript(...)
 			end
-			function env.startSandboxed(...)
+			function newEnv.startSandboxed(...)
 				startSandboxed(...)
 			end
-			function env.error(...)
+			function newEnv.error(...)
 				logger:err(...)
 			end
-			function env.shutdown(reboot)
+			function newEnv.shutdown(reboot)
 				computer.shutdown(reboot)
 			end
-			env.hError = hError
+			newEnv.hError = hError
 			if internet.enabled then
-				env.internet = internet
+				newEnv.internet = internet
 			end
 			local ran, er = pcall(loaded)
 			if er then
@@ -85,27 +87,37 @@ function startSandboxed(path, admin)
 		if fs.exists(path) then
 			local file = io.open(path, 'r')
 			local data = file:read('*a')
-			local loaded, err = load(data)
+			local newEnv = setmetatable({}, {
+				__index = function(self, index)
+					if rawget(self, index) then
+						return rawget(self, index)
+					elseif realEnv[index] and index ~= '_ENV' then
+						return realEnv[index]
+					else
+						return nil
+					end
+				end
+			})
+			local loaded, err = load(data, '[S]Script', 'bt', newEnv)
 			if loaded then
-				local env = getfenv(loaded)
-				function env.getUsedMemory()
+				function newEnv.getUsedMemory()
 					return computer.totalMemory() - computer.freeMemory()
 				end
-				function env.getFreeMemory()
+				function newEnv.getFreeMemory()
 					return computer.freeMemory()
 				end
-				function env.getTotalMemory()
+				function newEnv.getTotalMemory()
 					return computer.totalMemory()
 				end
-				function env.require(path, ...)
+				function newEnv.require(path, ...)
 					startSandboxed(path, false, ...)
 				end
 				if admin then	
-					function env.shutdown(reboot)
+					function newEnv.shutdown(reboot)
 						computer.shutdown(reboot)
 					end
 				end
-				env._G = _G.sandboxed
+				newEnv._G = _G.sandboxed
 				local ran, er = pcall(loaded)
 				if er then
 					error('[RUNTIME] ' .. er)
