@@ -7,10 +7,34 @@ end
 local fs = require('filesystem')
 local internet = require('internet')
 
+if not require('gui') then
+	print('Installing GUI library.')
+	
+	local installer = "https://pastebin.com/raw/ryhyXUKZ"
+	local data = ''
+	
+	for dat in internet.request(installer) do
+		data = data .. tostring(dat)
+	end
+	
+	local file = io.open('./GUIInstaller.lua', 'w')
+	file:write(data)
+	file:close()
+	
+	shell.execute('./GUIInstaller.lua')
+	
+	filesystem.remove('./GUIInstaller.lua')
+	
+	print('GUI library installed. Credits to IgorTimofeev on GitHub.')
+end
+
 local manifestURL = "https://raw.githubusercontent.com/DannehSC/OCOS/master/downloadmanifest.lua"
 
 print('Checking manifest for updates.')
+	
+
 local manData = ""
+
 for dat in internet.request(manifestURL) do
 	manData = manData .. tostring(dat)
 end
