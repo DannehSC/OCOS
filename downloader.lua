@@ -1,4 +1,3 @@
-local shell = require('shell')
 local component = require('component')
 
 if not component.isAvailable('internet') then
@@ -6,6 +5,8 @@ if not component.isAvailable('internet') then
 end
 
 local fs = require('filesystem')
+local shell = require('shell')
+local computer = require('computer')
 local internet = require('internet')
 
 if not pcall(require, 'gui') then
@@ -24,7 +25,7 @@ if not pcall(require, 'gui') then
 	
 	shell.execute('./GUIInstaller.lua')
 	
-	filesystem.remove('./GUIInstaller.lua')
+	fs.remove('./GUIInstaller.lua')
 	
 	print('GUI library installed. Credits to IgorTimofeev on GitHub.')
 end
@@ -90,3 +91,9 @@ for i, v in pairs(manifest) do
 		print('[WARNING] Unable to request ' .. v)
 	end
 end
+
+print('Rebooting to finish updates...')
+
+os.sleep(2)
+
+computer.shutdown(true)
