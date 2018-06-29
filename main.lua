@@ -1,4 +1,4 @@
-local gui = require('gui')
+local gui = require('GUI')
 local color = require('color')
 local component = require('component')
 
