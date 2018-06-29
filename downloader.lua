@@ -7,7 +7,7 @@ end
 local fs = require('filesystem')
 local internet = require('internet')
 
-if not require('gui') then
+if not pcall(require, 'gui') then
 	print('Installing GUI library.')
 	
 	local installer = "https://pastebin.com/raw/ryhyXUKZ"
