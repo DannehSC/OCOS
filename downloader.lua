@@ -1,3 +1,4 @@
+local shell = require('shell')
 local component = require('component')
 
 if not component.isAvailable('internet') then
