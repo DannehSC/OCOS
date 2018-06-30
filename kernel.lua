@@ -45,7 +45,7 @@ function startScript(path)
 				end
 			end
 		})
-		local loaded, err = load(data, 'Script', 'bt', newEnv)
+		local loaded, err = load(data, path, 'bt', newEnv)
 		if loaded then
 			function newEnv.getUsedMemory()
 				return computer.totalMemory() - computer.freeMemory()
@@ -101,7 +101,7 @@ function startSandboxed(path, admin)
 					end
 				end
 			})
-			local loaded, err = load(data, '[S]Script', 'bt', newEnv)
+			local loaded, err = load(data, '[S] ' .. path, 'bt', newEnv)
 			if loaded then
 				function newEnv.getUsedMemory()
 					return computer.totalMemory() - computer.freeMemory()
