@@ -33,7 +33,6 @@ end
 local manifestURL = "https://raw.githubusercontent.com/DannehSC/OCOS/master/downloadmanifest.lua"
 
 print('Checking manifest for updates.')
-	
 
 local manData = ""
 
@@ -72,8 +71,13 @@ for i, v in pairs(manifest) do
 	end
 	if data then
 		local u = true
-		if fs.exists('./' .. i) then
-			if io.open('./' .. i, 'r'):read('*a') ~= data then
+		local path = fs.path(i)
+		if not fs.exists(path) then
+			fs.makeDirectory(path)
+		end
+		
+		if fs.exists(i) then
+			if io.open(i, 'r'):read('*a') ~= data then
 				print('Updating ' .. i)
 			else
 				print('Ignoring ' .. i .. ' - It is already updated')
